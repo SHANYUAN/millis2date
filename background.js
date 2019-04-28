@@ -1,34 +1,41 @@
 "use strict";
 
-// var EXTENSION_ID = "millis2date";
+var EXTENSION_ID = "millis2date";
+var NOTIFICATION_ID = "result";
 
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({ color: "#3aa757" }, function() {
-    console.log("The color is green.");
-  });
-});
+chrome.runtime.onInstalled.addListener(afterInstall);
 
-var menuItem = {
-  id: "millis2date",
-  title: "millis2date",
-  contexts: ["selection"]
-};
+addMenuItem();
 
-chrome.contextMenus.create(menuItem);
+var notification = createNotification();
 
 chrome.contextMenus.onClicked.addListener(function(data) {
-  console.error("HERE!!!!");
-  if (data.menuItemId == "millis2date") {
-    // var millis = Number(data.selectionText);
-    // var date = new Date(millis);
+  if (data.menuItemId == EXTENSION_ID) {
+    var millis = Number(data.selectionText);
+    var date = new Date(millis);
 
+    chrome.notifications.clear(NOTIFICATION_ID);
     var options = {
       type: "basic",
       iconUrl: "images/get_started128.png",
       title: "Millis2Date",
-      message: "TEST123"
+      message: date.toString()
     };
-
-    chrome.notifications.create("limitNotif", options);
+    chrome.notifications.create(NOTIFICATION_ID, options);
   }
 });
+
+function afterInstall() {
+  console.log("Installed " + EXTENSION_ID + ".");
+}
+
+function addMenuItem() {
+  var menuItem = {
+    id: EXTENSION_ID,
+    title: "millis2date",
+    contexts: ["selection"]
+  };
+  chrome.contextMenus.create(menuItem);
+}
+
+function createNotification() {}
