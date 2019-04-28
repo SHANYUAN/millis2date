@@ -1,0 +1,11 @@
+{
+  "name": "Millis2Date",
+  "version": "1.0",
+  "description": "Convert epoch millis to date!",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": ["storage", "contextMenus", "notifications"],
+  "manifest_version": 2
+}
